@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { ProcessedVideo } from './interfaces';
+import { ProcessedVideo } from './models/interfaces';
 
 @Component({
   selector: 'mi-root',

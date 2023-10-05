@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { API } from './constants';
-import { Author, Category, ProcessedVideo } from './interfaces';
+import { API } from '../constants';
+import { Author, Category, ProcessedVideo } from '../models/interfaces';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${API}/categories`);

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProcessedVideo } from '../interfaces';
+import { ProcessedVideo } from '../../models/interfaces';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'mi-home',
@@ -9,9 +10,13 @@ import { ProcessedVideo } from '../interfaces';
 export class HomeComponent implements OnInit {
   videos: ProcessedVideo[] = [];
 
-  constructor() { }
+  constructor(
+    private dataService: DataService
+  ) { }
 
   ngOnInit(): void {
   }
+
+
 
 }
