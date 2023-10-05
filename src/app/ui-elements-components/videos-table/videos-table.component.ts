@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ProcessedVideo } from '../interfaces';
+import { ProcessedVideo } from '../../interfaces';
 
 @Component({
   selector: 'mi-videos-table',

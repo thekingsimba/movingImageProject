@@ -8,6 +8,5 @@ import { ProcessedVideo } from './interfaces';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  videos: ProcessedVideo[] = [];
-  constructor() {}
+  constructor() { }
 }
