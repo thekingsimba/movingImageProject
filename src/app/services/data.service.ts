@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { API } from '../constants';
-import { Author, Category, ProcessedVideo } from '../models/interfaces';
-import { Observable, of } from 'rxjs';
+import { Author, Category, ProcessedVideo, Video, formatObject } from '../models/interfaces';
+import { Observable, map, mergeMap, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +20,37 @@ export class DataService {
   }
 
   getVideos(): Observable<ProcessedVideo[]> {
-    return of([]);
-    // Get the Authors and iterate over the videos inside each one. Add the missing information to get a ProcessedVideo
-    // return this.getAuthors().pipe(
-    // ...
+    // Get the Authors and iterate over the videos inside each one. Then return only videos
+    return this.getAuthors().pipe(
+      map((authors: Author[]) => {
+
+        const videosList: ProcessedVideo[] = [];
+
+        authors.forEach(author => {
+          author.videos.forEach(video => {
+            const processedVideo: ProcessedVideo = {
+              id: video.id,
+              name: video.name,
+              author: author.name,
+              categories: this.addCategoryName(video.catIds),
+              bestFormat: this.addBestFormat(video.formats),
+              releaseDate: video.releaseDate
+            };
+
+            videosList.push(processedVideo);
+          });
+        });
+
+        return videosList;
+      })
+    )
+  }
+
+  addCategoryName(categoriesIds: number[]) {
+    return [''];
+  }
+
+  addBestFormat(formats: { one: formatObject, two: formatObject, three: formatObject }) {
+    return ''
   }
 }

@@ -10,13 +10,30 @@ import { DataService } from 'src/app/services/data.service';
 export class HomeComponent implements OnInit {
   videos: ProcessedVideo[] = [];
 
+  categoryList: any[] = [];
+
   constructor(
     private dataService: DataService
   ) { }
 
   ngOnInit(): void {
+    this.setCategoryList();
+    this.setVideoList();
   }
 
+  setCategoryList() {
+    this.dataService.getCategories().pipe().subscribe(
+      (resp) => {
+        console.log(resp)
+      },
+      (error) => {
 
+      }
+    )
+  }
+
+  setVideoList() {
+    this.dataService.getVideos().subscribe()
+  }
 
 }
