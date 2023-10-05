@@ -1,2 +1,1 @@
-# movingImageProject
-just a short angular demo 
+# movingimage Angular FEC
