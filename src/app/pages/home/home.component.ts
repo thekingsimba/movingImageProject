@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProcessedVideo } from '../../models/interfaces';
 import { DataService } from 'src/app/services/data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'mi-home',
@@ -10,30 +11,27 @@ import { DataService } from 'src/app/services/data.service';
 export class HomeComponent implements OnInit {
   videos: ProcessedVideo[] = [];
 
-  categoryList: any[] = [];
-
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private toast: ToastrService
+
   ) { }
 
   ngOnInit(): void {
-    this.setCategoryList();
     this.setVideoList();
   }
 
-  setCategoryList() {
-    this.dataService.getCategories().pipe().subscribe(
-      (resp) => {
-        console.log(resp)
-      },
-      (error) => {
-
-      }
-    )
-  }
 
   setVideoList() {
-    this.dataService.getVideos().subscribe()
+    this.dataService.getVideos().subscribe({
+      next: result => {
+        this.videos = result;
+      },
+      error: error => {
+        this.toast.error(" An error occurred while loading the videos list, please try again")
+        console.error(error);
+      }
+    })
   }
 
 }

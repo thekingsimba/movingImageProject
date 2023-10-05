@@ -9,9 +9,32 @@ import { VideosTableComponent } from './ui-elements-components/videos-table/vide
 import { HomeComponent } from './pages/home/home.component';
 import { AddEditVideosComponent } from './pages/add-edit-videos/add-edit-videos.component';
 
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { NgxsModule } from '@ngxs/store';
+
+import { ToastrModule } from 'ngx-toastr';
+import { CategoriesState } from './categories-store/categories.state';
+
 @NgModule({
   declarations: [AppComponent, ButtonComponent, VideosTableComponent, HomeComponent, AddEditVideosComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    NgxsModule.forRoot([
+      CategoriesState
+    ]),
+    NgxsStoragePluginModule.forRoot({
+      key: [
+        'categories'
+      ]
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    ToastrModule.forRoot(),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
