@@ -1,2 +1,3 @@
-<button class="button" [style.color]="color" [style.border]="border" [style.backgroundColor]="backgroundColor">{{ text
+<button class="button" [style.color]="color" [style.border]="border" [style.backgroundColor]="backgroundColor"
+    [class]="buttonClass" [disabled]="isDisabled" (click)="handleClick($event)">{{ text
     }}</button>

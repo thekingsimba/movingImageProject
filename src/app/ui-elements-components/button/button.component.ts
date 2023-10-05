@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'mi-button',
@@ -10,4 +10,14 @@ export class ButtonComponent {
   @Input() border: string = '';
   @Input() backgroundColor: string = '';
   @Input() text: string = '';
+  @Input() buttonClass: string = '';
+  @Input() isDisabled: boolean = false;
+
+  @Output() onClick = new EventEmitter<MouseEvent>();
+
+  constructor() { }
+
+  handleClick(event: MouseEvent) {
+    this.onClick.emit(event);
+  }
 }
