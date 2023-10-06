@@ -11,8 +11,10 @@ export class AppComponent {
     private router: Router
   ) { }
 
+
   buttonClicked(event?: MouseEvent) {
-    console.log("click")
-    this.router.navigate(['/add-edit-videos']);
+    console.log("click");
+    this.router.navigate(['/add-edit-videos/new']);
   }
+
 }

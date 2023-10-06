@@ -23,7 +23,7 @@ export interface Author {
 }
 
 export interface ProcessedVideo {
-  id?: number;
+  id: number;
   name: string;
   author: string;
   categories: string[];

@@ -19,7 +19,8 @@
         <td>{{ video.bestFormat }}</td>
         <td>{{ video.releaseDate }}</td>
         <td>
-          <mi-button [border]="'2px solid #35A2B8'" [backgroundColor]="'#35A2B8'" [text]="'Edit'"></mi-button>
+          <mi-button [border]="'2px solid #35A2B8'" [backgroundColor]="'#35A2B8'" [text]="'Edit'"  
+          (onClick)="navigateToEditVideo(video.id)"></mi-button>
           <mi-button [border]="'2px solid #DC3545'" [backgroundColor]="'#DC3545'" [text]="'Delete'"></mi-button>
         </td>
       </tr>
