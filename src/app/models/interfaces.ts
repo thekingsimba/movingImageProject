@@ -13,6 +13,7 @@ export interface DataFromDeleteSubject {
   authorData: Author;
   videoId: number;
   authorID: number;
+  newVideoDeleted?: boolean;
 }
 
 export interface Video {

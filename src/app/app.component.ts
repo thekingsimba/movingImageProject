@@ -21,10 +21,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private toast: ToastrService
   ) {
-    // this.route.params.subscribe(params => {
-    //   this.pagePurpose = params['purpose'];
-    //   console.log(params['purpose'])
-    // });
   }
 
   ngOnInit() {
@@ -58,7 +54,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.dataService.deleteVideo(authorData, videoId, authorID).subscribe({
       next: result => {
         this.toast.success("Video deleted from the list!");
-        this.dataService.updateModalDataToDelete(null);
+        const showModal = false;
+        const newVideoDeleted = true;
+        this.dataService.updateModalDataToDelete({ showModal, authorData, videoId, authorID, newVideoDeleted });
       },
       error: error => {
         this.toast.error(" An error occurred while deleting the video from the preview Author list")
