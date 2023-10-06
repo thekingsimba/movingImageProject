@@ -40,11 +40,10 @@ export class DataService {
         return this.processVideoData();
       })
     )
-
   }
 
-  addNewVideo(authorAndVideoDetails: Author) {
-
+  addOrEditVideo(authorVideoData: Author, authorID: number): Observable<Author> {
+    return this.http.put<Author>(`${API}/authors/${authorID}`, authorVideoData);
   }
 
   processVideoData() {

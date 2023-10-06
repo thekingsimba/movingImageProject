@@ -72,11 +72,20 @@ export class AddEditVideosComponent implements OnInit {
         releaseDate: this.getReleaseDate()
       }
 
-      authorConcerned?.videos.push(newVideo)
+      authorConcerned.videos.push(newVideo)
 
       //console.log(authorConcerned)
 
-      //this.dataService.addNewVideo(authorConcerned).subscribe();
+      this.dataService.addOrEditVideo(authorConcerned, authorConcerned.id).subscribe({
+        next: result => {
+          this.toast.error("Video successfully saved !")
+          this.router.navigate(['/home']);
+        },
+        error: error => {
+          this.toast.error(" An error occurred while saving the video, please try again")
+          console.error(error);
+        }
+      });
     }
   }
 
