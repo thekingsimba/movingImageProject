@@ -89,7 +89,7 @@ export class DataService {
   }
 
 
-  addBestFormat(formats: { one: formatObject, two: formatObject, three: formatObject }) {
+  addBestFormat(formats: { [key: string]: formatObject }) {
     const allFormat = Object.values(formats)
 
     const sortedFormat = this.formatSorting(allFormat);

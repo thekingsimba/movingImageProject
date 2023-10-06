@@ -15,31 +15,32 @@
         </div>
 
         <div class="form-group">
-            <label for="videoAuthor">Video Author:</label>
-            <select id="videoAuthor" [value]="authorList[0]" name="videoAuthor" class="form-control"
-                [(ngModel)]="selectedAuthor" required #videoAuthorId="ngModel">
-                <option [value]="author" *ngFor="let author of authorList; index as i;">{{author.name}}</option>
+            <label for="videoAuthorId">Video Author:</label>
+            <select id="videoAuthorId" name="videoAuthorId" class="form-control" [(ngModel)]="selectedAuthorId" required
+                #videoAuthorRef="ngModel">
+                <option [value]="author.id" *ngFor="let author of authorList;">{{author.name}}</option>
             </select>
             <br>
             <span
-                *ngIf=" (videoAuthorId.invalid && (videoAuthorId.dirty || videoAuthorId.touched) || (videoAuthorId.dirty  && !isSet(videoAuthorId.value.name))  ) ">
-                <small *ngIf="videoAuthorId.errors && videoAuthorId.errors['required']"> * Oups ! This field is
+                *ngIf=" (videoAuthorRef.invalid && (videoAuthorRef.dirty || videoAuthorRef.touched) || (videoAuthorRef.dirty  && !isSet(videoAuthorRef.value.name))  ) ">
+                <small *ngIf="videoAuthorRef.errors && videoAuthorRef.errors['required']"> * Oups ! This field is
                     required.
                 </small>
             </span>
         </div>
 
         <div class="form-group">
-            <label for="videoCategory" class="multiple-selection-label">Video Category:</label>
-            <select id="videoCategory" name="videoCategory" class="form-control" [(ngModel)]="selectedCategory" multiple
-                #videoCategoryId="ngModel" required>
-                <option value="action" *ngFor="let category of categoryList; index as i;">{{category.name}}</option>
+            <label for="videoCategoryId" class="multiple-selection-label">Video Category:</label>
+            <select id="videoCategoryId" name="videoCategoryId" class="form-control" [(ngModel)]="selectedCategoryId"
+                multiple #videoCategoryRef="ngModel" required>
+                <option [value]="category.id" *ngFor="let category of categoryList; index as i;">{{category.name}}
+                </option>
             </select>
             <br>
             <span
-                *ngIf=" (videoCategoryId.invalid && (videoCategoryId.dirty || videoCategoryId.touched) || (videoCategoryId.dirty  && !isSet(videoCategoryId.value.name))  ) ">
-                <small *ngIf="videoCategoryId.errors && videoCategoryId.errors['required']"> * Oups ! This field is
-                    required.
+                *ngIf=" (videoCategoryRef.invalid && (videoCategoryRef.dirty || videoCategoryRef.touched) || (videoCategoryRef.dirty  && !isSet(videoCategoryRef.value.name))  ) ">
+                <small *ngIf="videoCategoryRef.errors && videoCategoryRef.errors['required']">
+                    * Oups ! This field is required.
                 </small>
             </span>
         </div>

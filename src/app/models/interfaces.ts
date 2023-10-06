@@ -12,11 +12,7 @@ export interface Video {
   id: number;
   catIds: number[];
   name: string;
-  formats: {
-    one: formatObject,
-    two: formatObject,
-    three: formatObject
-  };
+  formats: { [key: string]: formatObject }
   releaseDate: string;
 }
 
@@ -27,7 +23,7 @@ export interface Author {
 }
 
 export interface ProcessedVideo {
-  id: number;
+  id?: number;
   name: string;
   author: string;
   categories: string[];
