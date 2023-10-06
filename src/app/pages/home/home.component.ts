@@ -14,7 +14,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private toast: ToastrService
-
   ) { }
 
   ngOnInit(): void {
@@ -35,17 +34,6 @@ export class HomeComponent implements OnInit {
   }
 
 
-  deleteVideo(authorData: Author, videoId: number, authorID: number) {
-    this.dataService.deleteVideo(authorData, videoId, authorID).subscribe({
-      next: result => {
-        this.toast.success("Video deleted from the preview Author list!");
-      },
-      error: error => {
-        this.toast.error(" An error occurred while deleting the video from the preview Author list")
-        console.error(error);
-      }
-    });
 
-  }
 
 }

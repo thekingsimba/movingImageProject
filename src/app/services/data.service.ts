@@ -2,24 +2,33 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { API } from '../constants';
-import { Author, Category, ProcessedVideo, Video, formatObject } from '../models/interfaces';
-import { Observable, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { Author, Category, DataFromDeleteSubject, ProcessedVideo, Video, formatObject } from '../models/interfaces';
+import { BehaviorSubject, Observable, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { CategoriesStateModel } from '../categories-store/categories.state';
 import { SetCategoriesData } from '../categories-store/categories.actions';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
 
+
+  private deleteModalSubject = new BehaviorSubject<DataFromDeleteSubject | null>(null);
+
+  detailsToDelete$: Observable<DataFromDeleteSubject | null>
+
+
   categoriesList: Category[] = [];
 
   constructor(
     private http: HttpClient,
     private store: Store
-  ) { }
+  ) {
+    this.detailsToDelete$ = this.deleteModalSubject.asObservable();
+  }
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${API}/categories`);
@@ -48,6 +57,10 @@ export class DataService {
 
   addOrEditVideo(authorData: Author, authorID: number): Observable<Author> {
     return this.http.put<Author>(`${API}/authors/${authorID}`, authorData);
+  }
+
+  updateModalDataToDelete(newData: DataFromDeleteSubject | null) {
+    this.deleteModalSubject.next(newData);
   }
 
   deleteVideo(authorData: Author, videoId: number, authorID: number): Observable<{ deleted: boolean }> {

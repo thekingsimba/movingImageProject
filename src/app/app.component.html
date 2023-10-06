@@ -1,3 +1,7 @@
+<mi-modal *ngIf="videoData?.showModal" (onConfirm)="onConfirm()" (onCancel)="onCancel()"
+  (onClose)="onClose()"></mi-modal>
+
+
 <header class="header">
   <h1>Videos</h1>
   <mi-button *ngIf="showAddButton()" [border]="'2px solid #00ab35'" [backgroundColor]="'#00ab35'" [text]="'Add video'"

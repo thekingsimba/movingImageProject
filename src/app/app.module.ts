@@ -17,9 +17,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { CategoriesState } from './categories-store/categories.state';
 import { FormsModule } from '@angular/forms';
+import { ModalComponent } from './ui-elements-components/modal/modal.component';
 
 @NgModule({
-  declarations: [AppComponent, ButtonComponent, VideosTableComponent, HomeComponent, AddEditVideosComponent],
+  declarations: [AppComponent, ButtonComponent, VideosTableComponent, HomeComponent, AddEditVideosComponent, ModalComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

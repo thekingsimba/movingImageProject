@@ -8,6 +8,13 @@ export interface formatObject {
   size: number;
 }
 
+export interface DataFromDeleteSubject {
+  showModal: boolean;
+  authorData: Author;
+  videoId: number;
+  authorID: number;
+}
+
 export interface Video {
   id: number;
   catIds: number[];
