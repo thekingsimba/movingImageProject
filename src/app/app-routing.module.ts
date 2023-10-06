@@ -6,7 +6,7 @@ import { AddEditVideosComponent } from './pages/add-edit-videos/add-edit-videos.
 const routes: Routes = [
 
   {
-    path: 'add-edit-videos',
+    path: 'add-edit-videos/:purpose/:authorId/:videoId',
     component: AddEditVideosComponent,
   },
   {

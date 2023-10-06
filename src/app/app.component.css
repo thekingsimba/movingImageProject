@@ -16,3 +16,7 @@
   padding: 16px;
   background: var(--lighter-gray);
 }
+
+h1 {
+  display: inline;
+}

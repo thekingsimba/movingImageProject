@@ -1,1 +1,57 @@
-<p>add-edit-videos works!</p>
+<h1>Add video</h1>
+
+<div class="video-form-wrapper">
+
+    <form #videoForm="ngForm" (ngSubmit)="onSubmit(videoForm)">
+        <div class="form-group">
+            <label for="videoName">Video Name:</label>
+            <input type="text" id="videoName" name="videoName" #videoNameId="ngModel" class="form-control"
+                [(ngModel)]="videoName" required /> <br>
+            <span
+                *ngIf=" (videoNameId.invalid && (videoNameId.dirty || videoNameId.touched) || (videoNameId.dirty  && !isSet(videoNameId.value))  ) ">
+                <small *ngIf="videoNameId.errors && videoNameId.errors['required']"> * Oups ! This field is required.
+                </small>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label for="author">Video Author:</label>
+            <select id="author" name="authorId" class="form-control" [(ngModel)]="authorId" required
+                #videoAuthorRef="ngModel">
+                <option [value]="author.id" *ngFor="let author of authorList;">{{author.name}}</option>
+            </select>
+            <br>
+            <span
+                *ngIf=" (videoAuthorRef.invalid && (videoAuthorRef.dirty || videoAuthorRef.touched) || (videoAuthorRef.dirty  && !isSet(videoAuthorRef.value.name))  ) ">
+                <small *ngIf="videoAuthorRef.errors && videoAuthorRef.errors['required']"> * Oups ! This field is
+                    required.
+                </small>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label for="categoryId" class="multiple-selection-label">Video Category:</label>
+            <select id="categoryId" name="videoCategoryList" class="form-control" [(ngModel)]="videoCategoryList"
+                multiple #videoCategoryRef="ngModel" required>
+                <option [value]="category.id" *ngFor="let category of allCategoryList; index as i;">{{category.name}}
+                </option>
+            </select>
+            <br>
+            <span
+                *ngIf=" (videoCategoryRef.invalid && (videoCategoryRef.dirty || videoCategoryRef.touched) || (videoCategoryRef.dirty  && !isSet(videoCategoryRef.value.name))  ) ">
+                <small *ngIf="videoCategoryRef.errors && videoCategoryRef.errors['required']">
+                    * Oups ! This field is required.
+                </small>
+            </span>
+        </div>
+
+        <div class="button-wrapper">
+            <mi-button type="submit" [border]="'2px solid #00ab35'" [backgroundColor]="'#00ab35'" [text]="'Submit'"
+                [isDisabled]="videoForm.invalid ? true : false"></mi-button>
+            <mi-button type="button" [border]="'2px solid #6e6e6e'" [backgroundColor]="'#6e6e6e'" [text]="'Cancel'"
+                (onClick)="buttonClicked($event)"></mi-button>
+        </div>
+
+
+    </form>
+</div>

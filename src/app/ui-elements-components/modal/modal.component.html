@@ -1,0 +1,19 @@
+<div class="modal-container">
+    <div class="modal-body-card">
+
+        <div class="closebtn-wrapper">
+            <h2>{{title}}</h2>
+            <span class="closebtn" (click)="closeModal($event)">&times;</span>
+        </div>
+
+        <div class="content">{{text}}</div>
+
+        <div class="button-wrapper">
+            <mi-button type="button" [border]="'2px solid #00ab35'" [backgroundColor]="'#00ab35'" [text]="'Confirm'"
+                (onClick)="confirm($event)"></mi-button>
+
+            <mi-button type="button" [border]="'2px solid #6e6e6e'" [backgroundColor]="'#6e6e6e'" [text]="'Cancel'"
+                (onClick)="cancel($event)"></mi-button>
+        </div>
+    </div>
+</div>

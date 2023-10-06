@@ -1,0 +1,36 @@
+.modal-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.75);
+    z-index: 50;
+}
+
+.modal-body-card {
+    position: fixed;
+    top: 30vh;
+    left: 20vw;
+    width: 60vw;
+    background-color: #FFF;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.26);
+    z-index: 100;
+    padding: 16px;
+}
+
+
+ 
+.closebtn{
+    font-size: 55px;
+    cursor: pointer;
+    position: absolute;
+    right: 24px;
+    top: 12px;
+}
+
+.content {
+    margin-top: 14px;
+    margin-bottom: 70px;
+}
+

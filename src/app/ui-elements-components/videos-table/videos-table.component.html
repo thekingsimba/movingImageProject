@@ -4,19 +4,25 @@
       <tr>
         <th>Video Name</th>
         <th>Author</th>
-        <th>Categories</th>
+        <th>Categories names</th>
+        <th>Highest quality format</th>
+        <th>Release date</th>
         <th>Options</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let video of videos; index as i; first as isFirst">
+      <tr *ngFor="let video of videos;">
         <td>{{ video.name }}</td>
         <td>{{ video.author }}</td>
         <td>{{ video.categories.join(", ") }}</td>
+        <td>{{ video.bestFormat }}</td>
+        <td>{{ video.releaseDate }}</td>
         <td>
-          <mi-button [text]="'Edit'"></mi-button>
-          <mi-button [text]="'Delete'"></mi-button>
+          <mi-button [border]="'2px solid #35A2B8'" [backgroundColor]="'#35A2B8'" [text]="'Edit'"
+            (onClick)="navigateToEditVideo(video.authorId, video.id)"></mi-button>
+          <mi-button [border]="'2px solid #DC3545'" [backgroundColor]="'#DC3545'" [text]="'Delete'"
+            (onClick)="deleteThisMovie(video.id, video.authorId)"></mi-button>
         </td>
       </tr>
     </tbody>

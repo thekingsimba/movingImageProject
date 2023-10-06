@@ -1,6 +1,11 @@
+<mi-modal title="Confirm Delete" text="Are you sure you want to delete this element?" *ngIf="videoData?.showModal"
+  (onConfirm)="onConfirm()" (onCancel)="onCancel()" (onClose)="onClose()"></mi-modal>
+
+
 <header class="header">
-  Videos
-  <mi-button [primary]="true" [text]="'Add video'"></mi-button>
+  <h1>Videos</h1>
+  <mi-button *ngIf="showAddNewButton" [border]="'2px solid #00ab35'" [backgroundColor]="'#00ab35'" [text]="'Add video'"
+    (onClick)="buttonClicked($event)"></mi-button>
 </header>
 
 <main class="main">
