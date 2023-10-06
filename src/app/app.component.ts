@@ -42,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onCancel(event?: MouseEvent) {
+    this.dataService.updateModalDataToDelete(null);
     this.router.navigate(['/home']);
   }
 

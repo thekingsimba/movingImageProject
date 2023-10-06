@@ -19,18 +19,14 @@
     padding: 16px;
 }
 
-h2 {
-    display: inline;
-    position: relative;
-    top: -25px;
-}
+
  
 .closebtn{
     font-size: 55px;
     cursor: pointer;
-    position: relative;
-    left: 523px;
-    top: -12px;
+    position: absolute;
+    right: 24px;
+    top: 12px;
 }
 
 .content {
