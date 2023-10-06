@@ -19,8 +19,8 @@ export class AddEditVideosComponent implements OnInit {
   currentAuthor?: Author;
   previewAuthor: Author;
 
-  categoryList: Category[] = [];
-  categoryId!: number;
+  allCategoryList: Category[] = [];
+  videoCategoryList: number[];
 
   videoId!: number | string;
 
@@ -34,6 +34,7 @@ export class AddEditVideosComponent implements OnInit {
   ) {
     this.route.params.subscribe(params => {
       this.purpose = params['purpose'];
+
       this.authorId = Number(params['authorId']);
       this.videoId = Number(params['videoId']);
     });
@@ -53,6 +54,7 @@ export class AddEditVideosComponent implements OnInit {
           this.previewAuthor = this.authorList.find(author => author.id === Number(this.authorId))!;
           const videoConcerned = this.previewAuthor!.videos.find(video => video.id === this.videoId)!;
           this.videoName = videoConcerned.name;
+          this.videoCategoryList = videoConcerned.catIds
         }
       },
       error: error => {
@@ -65,7 +67,7 @@ export class AddEditVideosComponent implements OnInit {
   setCategoryList() {
     this.dataService.getCategories().subscribe({
       next: result => {
-        this.categoryList = result;
+        this.allCategoryList = result;
       },
       error: error => {
         this.toast.error(" An error occurred while loading the CategoryList list, please try again")
@@ -88,7 +90,7 @@ export class AddEditVideosComponent implements OnInit {
 
         const newVideo: Video = {
           id: this.getNewVideoId(authorVideoList),
-          catIds: videoFormData.categoryId,
+          catIds: videoFormData.videoCategoryList,
           name: videoFormData.videoName,
           formats: {
             one: { res: "1080p", size: 1000 }
@@ -107,7 +109,7 @@ export class AddEditVideosComponent implements OnInit {
         const editedVideo: Video = {
           id: videoConcerned.id, // video Id for the preview author
 
-          catIds: videoFormData.categoryId,
+          catIds: videoFormData.videoCategoryList,
           name: videoFormData.videoName,
 
           formats: videoConcerned!.formats,
@@ -119,29 +121,56 @@ export class AddEditVideosComponent implements OnInit {
         // then we have to delete the video from the preview author list
 
         if (this.currentAuthor.id != this.previewAuthor.id) {
-          editedVideo.id = this.getNewVideoId(authorVideoList),
-            this.currentAuthor.videos.push(editedVideo)
+
           // delete from preview author list
+          this.deleteVideo(this.previewAuthor, videoConcerned.id, this.previewAuthor.id);
+
+          editedVideo.id = this.getNewVideoId(authorVideoList);
+          this.currentAuthor.videos.push(editedVideo);
 
         } else if (this.currentAuthor.id === this.previewAuthor.id) {
+
           const videoConcernedIndex = this.currentAuthor.videos.indexOf(videoConcerned)
           this.currentAuthor.videos[videoConcernedIndex] = editedVideo
+
         }
 
       }
 
-
-      this.dataService.addOrEditVideo(this.currentAuthor, this.currentAuthor.id).subscribe({
-        next: result => {
-          this.toast.error("Video successfully saved !")
-          this.router.navigate(['/home']);
-        },
-        error: error => {
-          this.toast.error(" An error occurred while saving the video, please try again")
-          console.error(error);
-        }
-      });
+      this.addOrEditVideo(this.currentAuthor, this.currentAuthor.id)
     }
+  }
+
+
+  addOrEditVideo(authorData: Author, authorID: number) {
+    this.dataService.addOrEditVideo(authorData, authorID).subscribe({
+      next: result => {
+        if (this.purpose === 'add') {
+          this.toast.success("Video successfully saved !");
+        } else {
+          this.toast.success("Video successfully edited !");
+        }
+
+        this.router.navigate(['/home']);
+      },
+      error: error => {
+        this.toast.error(" An error occurred while saving the video, please try again")
+        console.error(error);
+      }
+    });
+  }
+
+  deleteVideo(authorData: Author, videoId: number, authorID: number) {
+    this.dataService.deleteVideo(authorData, videoId, authorID).subscribe({
+      next: result => {
+        this.toast.success("Video deleted from the preview Author list!");
+      },
+      error: error => {
+        this.toast.error(" An error occurred while deleting the video from the preview Author list")
+        console.error(error);
+      }
+    });
+
   }
 
   buttonClicked(event?: MouseEvent) {

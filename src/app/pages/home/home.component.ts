@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProcessedVideo } from '../../models/interfaces';
+import { Author, ProcessedVideo } from '../../models/interfaces';
 import { DataService } from 'src/app/services/data.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -32,6 +32,20 @@ export class HomeComponent implements OnInit {
         console.error(error);
       }
     })
+  }
+
+
+  deleteVideo(authorData: Author, videoId: number, authorID: number) {
+    this.dataService.deleteVideo(authorData, videoId, authorID).subscribe({
+      next: result => {
+        this.toast.success("Video deleted from the preview Author list!");
+      },
+      error: error => {
+        this.toast.error(" An error occurred while deleting the video from the preview Author list")
+        console.error(error);
+      }
+    });
+
   }
 
 }

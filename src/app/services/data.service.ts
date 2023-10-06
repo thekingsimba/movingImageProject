@@ -29,6 +29,10 @@ export class DataService {
     return this.http.get<Author[]>(`${API}/authors`);
   }
 
+  getOneAuthor(authorId: number): Observable<Author> {
+    return this.http.get<Author>(`${API}/authors/${authorId}`);
+  }
+
   getVideos(): Observable<ProcessedVideo[]> {
 
     return this.getCategories().pipe(
@@ -42,8 +46,27 @@ export class DataService {
     )
   }
 
-  addOrEditVideo(authorVideoData: Author, authorID: number): Observable<Author> {
-    return this.http.put<Author>(`${API}/authors/${authorID}`, authorVideoData);
+  addOrEditVideo(authorData: Author, authorID: number): Observable<Author> {
+    return this.http.put<Author>(`${API}/authors/${authorID}`, authorData);
+  }
+
+  deleteVideo(authorData: Author, videoId: number, authorID: number): Observable<{ deleted: boolean }> {
+    return this.getOneAuthor(authorID).pipe(
+      switchMap((result) => {
+
+        // remove the concerned video
+        const remainingVideo = result.videos.filter(video => video.id != videoId)
+        authorData.videos = remainingVideo;
+
+        // save author
+        return this.addOrEditVideo(authorData, authorID).pipe(
+          switchMap((result) => {
+            // this ensure that the remaining data are really saved
+            return of({ deleted: true })
+          })
+        )
+      }
+      ))
   }
 
   processVideoData() {
@@ -96,7 +119,7 @@ export class DataService {
 
     const bestFormat = sortedFormat[sortedFormat.length - 1];
 
-    return bestFormat.res
+    return "best " + bestFormat.res
   }
 
 
