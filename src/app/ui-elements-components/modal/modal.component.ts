@@ -9,8 +9,6 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class ModalComponent implements OnInit {
 
-
-
   @Input() title: string = '';
   @Input() text: string = '';
 

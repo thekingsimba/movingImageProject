@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Author, ProcessedVideo } from '../../models/interfaces';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'mi-videos-table',
@@ -13,7 +14,8 @@ export class VideosTableComponent {
 
   constructor(
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    private toast: ToastrService
   ) { }
 
   navigateToEditVideo(authorId: number, videoId: number) {
@@ -21,7 +23,18 @@ export class VideosTableComponent {
   }
 
 
-  deleteThisMovie(showModal: boolean, authorData: Author, videoId: number, authorID: number) {
-    this.dataService.updateModalDataToDelete({ showModal, authorData, videoId, authorID })
+  deleteThisMovie(videoId: number, authorID: number) {
+
+    const showModal = true;
+    this.dataService.getOneAuthor(authorID).subscribe({
+      next: result => {
+        const authorData = result;
+        this.dataService.updateModalDataToDelete({ showModal, authorData, videoId, authorID });
+      },
+      error: error => {
+        this.toast.error("An error occurred while selecting the videos to deleting")
+        console.error(error);
+      }
+    })
   }
 }

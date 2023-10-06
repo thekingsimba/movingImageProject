@@ -1,5 +1,5 @@
-<mi-modal *ngIf="videoData?.showModal" (onConfirm)="onConfirm()" (onCancel)="onCancel()"
-  (onClose)="onClose()"></mi-modal>
+<mi-modal title="Confirm Delete" text="Are you sure you want to delete this element?" *ngIf="videoData?.showModal"
+  (onConfirm)="onConfirm()" (onCancel)="onCancel()" (onClose)="onClose()"></mi-modal>
 
 
 <header class="header">

@@ -57,7 +57,8 @@ export class AppComponent implements OnInit, OnDestroy {
   deleteVideo(authorData: Author, videoId: number, authorID: number) {
     this.dataService.deleteVideo(authorData, videoId, authorID).subscribe({
       next: result => {
-        this.toast.success("Video deleted from the preview Author list!");
+        this.toast.success("Video deleted from the list!");
+        this.dataService.updateModalDataToDelete(null);
       },
       error: error => {
         this.toast.error(" An error occurred while deleting the video from the preview Author list")
