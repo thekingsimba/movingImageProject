@@ -30,8 +30,8 @@
         </div>
 
         <div class="form-group">
-            <label for="videoCategoryId" class="multiple-selection-label">Video Category:</label>
-            <select id="videoCategoryId" name="videoCategoryId" class="form-control" [(ngModel)]="categoryId" multiple
+            <label for="categoryId" class="multiple-selection-label">Video Category:</label>
+            <select id="categoryId" name="categoryId" class="form-control" [(ngModel)]="categoryId" multiple
                 #videoCategoryRef="ngModel" required>
                 <option [value]="category.id" *ngFor="let category of categoryList; index as i;">{{category.name}}
                 </option>

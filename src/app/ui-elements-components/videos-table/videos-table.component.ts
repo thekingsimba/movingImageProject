@@ -15,7 +15,6 @@ export class VideosTableComponent {
   ) { }
 
   navigateToEditVideo(authorId: number, videoId: number) {
-    console.log('click')
     this.router.navigate([`/add-edit-videos/edit/${authorId}/${videoId}`]);
 
   }
