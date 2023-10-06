@@ -16,12 +16,14 @@ import { NgxsModule } from '@ngxs/store';
 
 import { ToastrModule } from 'ngx-toastr';
 import { CategoriesState } from './categories-store/categories.state';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, ButtonComponent, VideosTableComponent, HomeComponent, AddEditVideosComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     AppRoutingModule,
     NgxsModule.forRoot([
       CategoriesState

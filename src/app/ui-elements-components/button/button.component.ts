@@ -12,6 +12,7 @@ export class ButtonComponent {
   @Input() text: string = '';
   @Input() buttonClass: string = '';
   @Input() isDisabled: boolean = false;
+  @Input() type: string = "button";
 
   @Output() onClick = new EventEmitter<MouseEvent>();
 

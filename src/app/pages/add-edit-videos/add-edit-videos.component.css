@@ -1,0 +1,42 @@
+
+.video-form-wrapper{
+    margin-top: 30px;
+}
+label {
+    min-width: 150px;
+    display: inline-block;
+}
+
+input[type="text"], select {
+    border: 1px solid #1E3240;
+    min-height: 50px;
+    padding: 14px 18px;
+    font-family: Mulish-Regular;
+    font-size: 16px;
+    width: 80%;
+    margin-left: 15px;
+    margin-bottom: 50px;
+}
+
+input:focus, select:focus {
+    outline-color: #AFD4E2;
+}
+
+small{
+    margin-left: 150px;
+    color: red;
+    font-size: 12px;
+    position: relative;
+    top: -45px;
+    left: 18px;
+}
+
+.multiple-selection-label {
+    position: relative;
+    top: -145px;
+}
+
+.button-wrapper {
+    width: 80%;
+    margin-left: 150px;
+}

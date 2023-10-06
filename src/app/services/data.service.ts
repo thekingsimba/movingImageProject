@@ -18,8 +18,7 @@ export class DataService {
 
   constructor(
     private http: HttpClient,
-    private store: Store,
-    private toast: ToastrService
+    private store: Store
   ) { }
 
   getCategories(): Observable<Category[]> {
@@ -41,6 +40,10 @@ export class DataService {
         return this.processVideoData();
       })
     )
+
+  }
+
+  addNewVideo(authorAndVideoDetails: Author) {
 
   }
 
