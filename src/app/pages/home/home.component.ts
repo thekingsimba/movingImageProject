@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Author, DataFromDeleteSubject, ProcessedVideo } from '../../models/interfaces';
 import { DataService } from 'src/app/services/data.service';
 import { ToastrService } from 'ngx-toastr';
@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   videos: ProcessedVideo[] = [];
   deletedDataSubjectListener: DataFromDeleteSubject | null;
   private dataSubscription: Subscription;
@@ -50,6 +50,12 @@ export class HomeComponent implements OnInit {
     this.videos = this.videos.filter(video => video.id != this.deletedDataSubjectListener?.videoId);
     console.log(this.videos);
     this.dataService.updateModalDataToDelete(null);
+  }
+
+
+
+  ngOnDestroy() {
+    this.dataSubscription.unsubscribe();
   }
 
 

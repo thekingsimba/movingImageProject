@@ -17,8 +17,11 @@ export class DataService {
 
 
   private deleteModalSubject = new BehaviorSubject<DataFromDeleteSubject | null>(null);
+  private addNewButtonSubject = new BehaviorSubject<boolean>(true);
 
   detailsToDelete$: Observable<DataFromDeleteSubject | null>
+
+  addNewButtonStatus$: Observable<boolean>
 
 
   categoriesList: Category[] = [];
@@ -28,6 +31,7 @@ export class DataService {
     private store: Store
   ) {
     this.detailsToDelete$ = this.deleteModalSubject.asObservable();
+    this.addNewButtonStatus$ = this.addNewButtonSubject.asObservable();
   }
 
   getCategories(): Observable<Category[]> {
@@ -61,6 +65,10 @@ export class DataService {
 
   updateModalDataToDelete(newData: DataFromDeleteSubject | null) {
     this.deleteModalSubject.next(newData);
+  }
+
+  updateAddNewButtonStatus(newStatus: boolean) {
+    this.addNewButtonSubject.next(newStatus);
   }
 
   deleteVideo(authorData: Author, videoId: number, authorID: number): Observable<{ deleted: boolean }> {

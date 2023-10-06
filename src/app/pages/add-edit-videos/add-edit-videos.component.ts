@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Author, Category, Video } from 'src/app/models/interfaces';
 import { DataService } from 'src/app/services/data.service';
@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './add-edit-videos.component.html',
   styleUrls: ['./add-edit-videos.component.css']
 })
-export class AddEditVideosComponent implements OnInit {
+export class AddEditVideosComponent implements OnInit, OnDestroy {
 
   videoName: string = "";
 
@@ -34,10 +34,12 @@ export class AddEditVideosComponent implements OnInit {
   ) {
     this.route.params.subscribe(params => {
       this.purpose = params['purpose'];
-
       this.authorId = Number(params['authorId']);
       this.videoId = Number(params['videoId']);
     });
+
+    this.dataService.updateAddNewButtonStatus(false);
+
   }
 
   ngOnInit(): void {
@@ -197,6 +199,11 @@ export class AddEditVideosComponent implements OnInit {
       return false;
     }
     return typeof value !== 'undefined' && value !== null && value;
+  }
+
+
+  ngOnDestroy() {
+    this.dataService.updateAddNewButtonStatus(true);
   }
 
 

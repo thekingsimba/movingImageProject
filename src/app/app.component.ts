@@ -13,7 +13,9 @@ import { ToastrService } from 'ngx-toastr';
 export class AppComponent implements OnInit, OnDestroy {
   pagePurpose: string;
   videoData: DataFromDeleteSubject | null;
-  private dataSubscription: Subscription;
+  showAddNewButton: boolean;
+  private videoDataSubscription: Subscription;
+  private addNewBtnDataSubscription: Subscription;
 
   constructor(
     private router: Router,
@@ -24,13 +26,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.dataSubscription = this.dataService.detailsToDelete$.subscribe((newDataToDelete) => {
+    this.videoDataSubscription = this.dataService.detailsToDelete$.subscribe((newDataToDelete) => {
       this.videoData = newDataToDelete;
     });
-  }
 
-  showAddButton() {
-    return this.pagePurpose != "edit"
+
+    this.addNewBtnDataSubscription = this.dataService.addNewButtonStatus$.subscribe((newDataToDelete) => {
+      this.showAddNewButton = newDataToDelete;
+    });
   }
 
   buttonClicked(event?: MouseEvent) {
@@ -67,7 +70,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.dataSubscription.unsubscribe();
+    this.videoDataSubscription.unsubscribe();
+    this.addNewBtnDataSubscription.unsubscribe();
   }
 
 }
