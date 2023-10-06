@@ -15,8 +15,8 @@
         </div>
 
         <div class="form-group">
-            <label for="videoAuthorId">Video Author:</label>
-            <select id="videoAuthorId" name="videoAuthorId" class="form-control" [(ngModel)]="selectedAuthorId" required
+            <label for="author">Video Author:</label>
+            <select id="author" name="authorId" class="form-control" [(ngModel)]="authorId" required
                 #videoAuthorRef="ngModel">
                 <option [value]="author.id" *ngFor="let author of authorList;">{{author.name}}</option>
             </select>
@@ -31,8 +31,8 @@
 
         <div class="form-group">
             <label for="videoCategoryId" class="multiple-selection-label">Video Category:</label>
-            <select id="videoCategoryId" name="videoCategoryId" class="form-control" [(ngModel)]="selectedCategoryId"
-                multiple #videoCategoryRef="ngModel" required>
+            <select id="videoCategoryId" name="videoCategoryId" class="form-control" [(ngModel)]="categoryId" multiple
+                #videoCategoryRef="ngModel" required>
                 <option [value]="category.id" *ngFor="let category of categoryList; index as i;">{{category.name}}
                 </option>
             </select>

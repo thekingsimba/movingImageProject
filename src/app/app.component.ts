@@ -14,7 +14,7 @@ export class AppComponent {
 
   buttonClicked(event?: MouseEvent) {
     console.log("click");
-    this.router.navigate(['/add-edit-videos/new']);
+    this.router.navigate(['/add-edit-videos/add/new/video']);
   }
 
 }

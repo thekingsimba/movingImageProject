@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Author, Category, Video } from 'src/app/models/interfaces';
 import { DataService } from 'src/app/services/data.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'mi-add-edit-videos',
@@ -13,26 +13,47 @@ import { Router } from '@angular/router';
 export class AddEditVideosComponent implements OnInit {
 
   videoName: string = "";
+
   authorList: Author[] = [];
+  authorId!: number;
+  currentAuthor?: Author;
+  previewAuthor: Author;
+
   categoryList: Category[] = [];
-  selectedAuthorId?: number;
-  selectedCategoryId?: number;
+  categoryId!: number;
+
+  videoId!: number | string;
+
+  purpose: string = "add";
 
   constructor(
     private dataService: DataService,
     private toast: ToastrService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.route.params.subscribe(params => {
+      this.purpose = params['purpose'];
+      this.authorId = Number(params['authorId']);
+      this.videoId = Number(params['videoId']);
+    });
+  }
 
   ngOnInit(): void {
     this.setAuthorList();
     this.setCategoryList();
   }
 
+
   setAuthorList() {
     this.dataService.getAuthors().subscribe({
       next: result => {
         this.authorList = result;
+        if (this.purpose === 'edit') {
+          this.previewAuthor = this.authorList.find(author => author.id === Number(this.authorId))!;
+          const videoConcerned = this.previewAuthor!.videos.find(video => video.id === this.videoId)!;
+          this.videoName = videoConcerned.name;
+        }
       },
       error: error => {
         this.toast.error(" An error occurred while loading the Authors list, please try again")
@@ -57,26 +78,60 @@ export class AddEditVideosComponent implements OnInit {
   onSubmit(formData: NgForm): void {
     const videoFormData = formData.form.value;
 
-    const authorConcerned = this.authorList.find(author => author.id === Number(videoFormData.videoAuthorId));
+    this.currentAuthor = this.authorList.find(author => author.id === Number(videoFormData.authorId))!;
 
-    if (authorConcerned) {
-      const authorVideoList = authorConcerned.videos;
+    const authorVideoList = this.currentAuthor.videos;
 
-      const newVideo: Video = {
-        id: this.getCurrentVideoId(authorVideoList),
-        catIds: videoFormData.videoCategoryId,
-        name: videoFormData.videoName,
-        formats: {
-          one: { res: "1080p", size: 1000 }
-        },
-        releaseDate: this.getReleaseDate()
+    if (this.currentAuthor) {
+
+      if (this.purpose === "add") {
+
+        const newVideo: Video = {
+          id: this.getNewVideoId(authorVideoList),
+          catIds: videoFormData.categoryId,
+          name: videoFormData.videoName,
+          formats: {
+            one: { res: "1080p", size: 1000 }
+          },
+          releaseDate: this.getReleaseDate()
+        }
+
+        this.currentAuthor.videos.push(newVideo)
+
       }
 
-      authorConcerned.videos.push(newVideo)
+      else if (this.purpose === "edit") {
 
-      //console.log(authorConcerned)
+        const videoConcerned = this.previewAuthor.videos.find(video => video.id === this.videoId)!;
 
-      this.dataService.addOrEditVideo(authorConcerned, authorConcerned.id).subscribe({
+        const editedVideo: Video = {
+          id: videoConcerned.id, // video Id for the preview author
+
+          catIds: videoFormData.categoryId,
+          name: videoFormData.videoName,
+
+          formats: videoConcerned!.formats,
+          releaseDate: videoConcerned!.releaseDate
+        }
+
+        // find the right author
+        // if the edited video goes to another author then it become a new video for the new author (new id)
+        // then we have to delete the video from the preview author list
+
+        if (this.currentAuthor.id != this.previewAuthor.id) {
+          editedVideo.id = this.getNewVideoId(authorVideoList),
+            this.currentAuthor.videos.push(editedVideo)
+          // delete from preview author list
+
+        } else if (this.currentAuthor.id === this.previewAuthor.id) {
+          const videoConcernedIndex = this.currentAuthor.videos.indexOf(videoConcerned)
+          this.currentAuthor.videos[videoConcernedIndex] = editedVideo
+        }
+
+      }
+
+
+      this.dataService.addOrEditVideo(this.currentAuthor, this.currentAuthor.id).subscribe({
         next: result => {
           this.toast.error("Video successfully saved !")
           this.router.navigate(['/home']);
@@ -89,12 +144,11 @@ export class AddEditVideosComponent implements OnInit {
     }
   }
 
-
   buttonClicked(event?: MouseEvent) {
     this.router.navigate(['/home']);
   }
 
-  getCurrentVideoId(authorVideoList: Video[]) {
+  getNewVideoId(authorVideoList: Video[]) {
     const lastVideoId = authorVideoList[authorVideoList.length - 1].id
     return lastVideoId + 1;
   }

@@ -26,6 +26,7 @@ export interface ProcessedVideo {
   id: number;
   name: string;
   author: string;
+  authorId: number;
   categories: string[];
   bestFormat: string;
   releaseDate: string;

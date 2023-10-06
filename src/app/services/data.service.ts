@@ -58,6 +58,7 @@ export class DataService {
               id: video.id,
               name: video.name,
               author: author.name,
+              authorId: author.id,
               categories: this.addCategoryName(video.catIds),
               bestFormat: this.addBestFormat(video.formats),
               releaseDate: video.releaseDate
