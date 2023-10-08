@@ -4,6 +4,7 @@ import { DataService } from './services/data.service';
 import { Author, DataFromDeleteSubject } from './models/interfaces';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { ADD_VIDEO } from './constants';
 
 @Component({
   selector: 'mi-root',
@@ -19,7 +20,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private dataService: DataService,
     private toast: ToastrService
   ) {
@@ -37,7 +37,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   buttonClicked(event?: MouseEvent) {
-    this.router.navigate(['/add-edit-videos/add/new/video']);
+    const url = `/add-edit-videos/${ADD_VIDEO}/new/video`;
+    this.router.navigate([url]);
   }
 
   onConfirm(event?: MouseEvent) {
@@ -57,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
   deleteVideo(authorData: Author, videoId: number, authorID: number) {
     this.dataService.deleteVideo(authorData, videoId, authorID).subscribe({
       next: result => {
-        this.toast.success("Video deleted from the list!");
+        this.toast.info("Video deleted from the list!");
         const showModal = false;
         const newVideoDeleted = true;
         this.dataService.updateModalDataToDelete({ showModal, authorData, videoId, authorID, newVideoDeleted });

@@ -12,25 +12,25 @@ import { Subscription } from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
   videos: ProcessedVideo[] = [];
   deletedDataSubjectListener: DataFromDeleteSubject | null;
-  private dataSubscription: Subscription;
+  dataSubscription: Subscription;
 
   constructor(
     private dataService: DataService,
     private toast: ToastrService
   ) {
     this.dataSubscription = this.dataService.detailsToDelete$.subscribe((newDataToDelete) => {
+      // give details on the video deleted
       this.deletedDataSubjectListener = newDataToDelete;
-
+      // Check if a new video is deleted and update list
       if (this.deletedDataSubjectListener?.newVideoDeleted) {
-        console.log("called");
         this.updateListAfterDeleting()
       }
+
     });
   }
 
   ngOnInit(): void {
     this.setVideoList();
-
   }
 
   setVideoList() {
@@ -46,9 +46,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   updateListAfterDeleting() {
-    console.log(this.videos);
     this.videos = this.videos.filter(video => video.id != this.deletedDataSubjectListener?.videoId);
-    console.log(this.videos);
     this.dataService.updateModalDataToDelete(null);
   }
 

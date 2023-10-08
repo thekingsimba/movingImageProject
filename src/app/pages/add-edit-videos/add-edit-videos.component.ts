@@ -4,6 +4,7 @@ import { Author, Category, Video } from 'src/app/models/interfaces';
 import { DataService } from 'src/app/services/data.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ADD_VIDEO, EDIT_VIDEO } from 'src/app/constants';
 
 @Component({
   selector: 'mi-add-edit-videos',
@@ -24,7 +25,7 @@ export class AddEditVideosComponent implements OnInit, OnDestroy {
 
   videoId!: number | string;
 
-  purpose: string = "add";
+  purpose: string = ADD_VIDEO;
 
   constructor(
     private dataService: DataService,
@@ -32,10 +33,11 @@ export class AddEditVideosComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.route.params.subscribe(params => {
-      this.purpose = params['purpose'];
-      this.authorId = Number(params['authorId']);
-      this.videoId = Number(params['videoId']);
+
+    this.route.params.subscribe(({ purpose, authorId, videoId }) => {
+      this.purpose = purpose;
+      this.authorId = Number(authorId);
+      this.videoId = Number(videoId);
     });
 
     this.dataService.updateAddNewButtonStatus(false);
@@ -52,14 +54,14 @@ export class AddEditVideosComponent implements OnInit, OnDestroy {
     this.dataService.getAuthors().subscribe({
       next: result => {
         this.authorList = result;
-        if (this.purpose === 'edit') {
+        if (this.purpose === EDIT_VIDEO) {
           this.previewAuthor = this.authorList.find(author => author.id === Number(this.authorId))!;
           const videoConcerned = this.previewAuthor!.videos.find(video => video.id === this.videoId)!;
           this.videoName = videoConcerned.name;
           this.videoCategoryList = videoConcerned.catIds
         }
       },
-      error: error => {
+      error: (error) => {
         this.toast.error(" An error occurred while loading the Authors list, please try again")
         console.error(error);
       }
@@ -88,7 +90,8 @@ export class AddEditVideosComponent implements OnInit, OnDestroy {
 
     if (this.currentAuthor) {
 
-      if (this.purpose === "add") {
+      //============= ADD VIDEO ============================
+      if (this.purpose === ADD_VIDEO) {
 
         const newVideo: Video = {
           id: this.getNewVideoId(authorVideoList),
@@ -104,33 +107,37 @@ export class AddEditVideosComponent implements OnInit, OnDestroy {
 
       }
 
-      else if (this.purpose === "edit") {
+      //============= EDIT VIDEO ============================
+      else if (this.purpose === EDIT_VIDEO) {
 
         const videoConcerned = this.previewAuthor.videos.find(video => video.id === this.videoId)!;
 
         const editedVideo: Video = {
           id: videoConcerned.id, // video Id for the preview author
-
           catIds: videoFormData.videoCategoryList,
           name: videoFormData.videoName,
-
           formats: videoConcerned!.formats,
           releaseDate: videoConcerned!.releaseDate
         }
 
-        // find the right author
-        // if the edited video goes to another author then it become a new video for the new author (new id)
-        // then we have to delete the video from the preview author list
+        /* NOTE: 
+          We will assign the video to the right author
+          if the edited video goes to another author then it become a new video for the new author (new id)
+          in that case we have to delete the video from the preview author list 
+        */
 
+        //assign video to new author
         if (this.currentAuthor.id != this.previewAuthor.id) {
 
           // delete from preview author list
           this.deleteVideo(this.previewAuthor, videoConcerned.id, this.previewAuthor.id);
-
+          // set new id
           editedVideo.id = this.getNewVideoId(authorVideoList);
           this.currentAuthor.videos.push(editedVideo);
 
-        } else if (this.currentAuthor.id === this.previewAuthor.id) {
+        }
+        //assign video to same author
+        else if (this.currentAuthor.id === this.previewAuthor.id) {
 
           const videoConcernedIndex = this.currentAuthor.videos.indexOf(videoConcerned)
           this.currentAuthor.videos[videoConcernedIndex] = editedVideo
@@ -143,11 +150,14 @@ export class AddEditVideosComponent implements OnInit, OnDestroy {
     }
   }
 
+  setNewVideo() {
+
+  }
 
   addOrEditVideo(authorData: Author, authorID: number) {
     this.dataService.addOrEditVideo(authorData, authorID).subscribe({
       next: result => {
-        if (this.purpose === 'add') {
+        if (this.purpose === ADD_VIDEO) {
           this.toast.success("Video successfully saved !");
         } else {
           this.toast.success("Video successfully edited !");
@@ -165,7 +175,7 @@ export class AddEditVideosComponent implements OnInit, OnDestroy {
   deleteVideo(authorData: Author, videoId: number, authorID: number) {
     this.dataService.deleteVideo(authorData, videoId, authorID).subscribe({
       next: result => {
-        this.toast.success("Video deleted from the preview Author list!");
+        this.toast.info("Video deleted from the preview Author list!");
       },
       error: error => {
         this.toast.error(" An error occurred while deleting the video from the preview Author list")

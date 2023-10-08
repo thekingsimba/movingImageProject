@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { API } from '../constants';
-import { Author, Category, DataFromDeleteSubject, ProcessedVideo, Video, formatObject } from '../models/interfaces';
-import { BehaviorSubject, Observable, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { API, BEST_QUALITY } from '../constants';
+import { Author, Category, DataFromDeleteSubject, FormatObject, ProcessedVideo, Video } from '../models/interfaces';
+import { BehaviorSubject, Observable, catchError, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { CategoriesStateModel } from '../categories-store/categories.state';
 import { SetCategoriesData } from '../categories-store/categories.actions';
+import { addBestFormat } from './utils';
 
 
 @Injectable({
@@ -84,10 +85,21 @@ export class DataService {
           switchMap((result) => {
             // this ensure that the remaining data are really saved
             return of({ deleted: true })
+          }),
+          catchError((error) => {
+            // Handle and log errors here
+            console.error('Error deleting video', error);
+            return throwError('Failed to delete video');
           })
+
         )
-      }
-      ))
+      }),
+      catchError((error) => {
+        // Handle and log errors here
+        console.error('Error fetching author data', error);
+        return throwError('Failed to fetch author data');
+      })
+    )
   }
 
   processVideoData() {
@@ -104,7 +116,7 @@ export class DataService {
               author: author.name,
               authorId: author.id,
               categories: this.addCategoryName(video.catIds),
-              bestFormat: this.addBestFormat(video.formats),
+              bestFormat: addBestFormat(video.formats),
               releaseDate: video.releaseDate
             };
 
@@ -130,54 +142,6 @@ export class DataService {
     })
 
     return currentVideoCategories.map((category) => category.name);
-  }
-
-
-  addBestFormat(formats: { [key: string]: formatObject }) {
-    const allFormat = Object.values(formats)
-
-    const sortedFormat = this.formatSorting(allFormat);
-
-    const bestFormat = sortedFormat[sortedFormat.length - 1];
-
-    return "best " + bestFormat.res
-  }
-
-
-  formatSorting(allFormat: formatObject[]) {
-    // ASC sorting of movies format
-    const n = allFormat.length;
-    let swapped;
-
-    const findResValue = (res: string) => {
-      return Number(res.replace('p', ''))
-    }
-
-    do {
-      swapped = false;
-      for (let i = 0; i < n - 1; i++) {
-        if (allFormat[i].size > allFormat[i + 1].size) {
-          const temp = allFormat[i];
-          allFormat[i] = allFormat[i + 1];
-          allFormat[i + 1] = temp;
-          swapped = true;
-        }
-
-        else if (allFormat[i].size === allFormat[i + 1].size) {
-
-          //check res when size is equal
-          if (findResValue(allFormat[i].res) > findResValue(allFormat[i + 1].res)) {
-            const temp = allFormat[i];
-            allFormat[i] = allFormat[i + 1];
-            allFormat[i + 1] = temp;
-            swapped = true;
-          }
-        }
-      }
-    } while (swapped);
-
-    // ASC sorting
-    return allFormat;
   }
 
 
