@@ -27,15 +27,16 @@ export class VideosTableComponent {
   deleteThisMovie(videoId: number, authorID: number) {
 
     const showModal = true;
-    this.dataService.getOneAuthor(authorID).subscribe({
-      next: result => {
-        const authorData = result;
-        this.dataService.updateModalDataToDelete({ showModal, authorData, videoId, authorID });
-      },
-      error: error => {
-        this.toast.error("An error occurred while selecting the videos to deleting")
-        console.error(error);
-      }
-    })
+    this.dataService.getOneAuthor(authorID).subscribe(
+      {
+        next: result => {
+          const authorData = result;
+          this.dataService.updateModalDataToDelete({ showModal, authorData, videoId, authorID });
+        },
+        error: error => {
+          this.toast.error("An error occurred while selecting the videos to deleting")
+          console.error(error);
+        }
+      })
   }
 }

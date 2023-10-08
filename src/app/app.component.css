@@ -40,3 +40,10 @@ li a {
 left-side {
   display: inline;
 }
+
+.active {
+  font-weight: bold;
+  text-decoration: underline !important;
+  text-decoration-color: #00ab35 !important;
+  text-underline-offset: 10px;
+}
