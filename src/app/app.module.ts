@@ -18,9 +18,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { CategoriesState } from './categories-store/categories.state';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from './ui-elements-components/modal/modal.component';
+import { AboutUsComponent } from './pages/about-us/about-us.component';
 
 @NgModule({
-  declarations: [AppComponent, ButtonComponent, VideosTableComponent, HomeComponent, AddEditVideosComponent, ModalComponent],
+  declarations: [AppComponent, ButtonComponent, VideosTableComponent, HomeComponent, AddEditVideosComponent, ModalComponent, AboutUsComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

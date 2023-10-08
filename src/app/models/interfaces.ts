@@ -3,7 +3,7 @@ export interface Category {
   name: string;
 }
 
-export interface formatObject {
+export interface FormatObject {
   res: string;
   size: number;
 }
@@ -20,7 +20,7 @@ export interface Video {
   id: number;
   catIds: number[];
   name: string;
-  formats: { [key: string]: formatObject }
+  formats: { [key: string]: FormatObject }
   releaseDate: string;
 }
 
